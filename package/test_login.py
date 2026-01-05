@@ -1,4 +1,6 @@
 import pytest
+import allure
+from allure import attachment_type
 from selenium import webdriver
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.wait import WebDriverWait
@@ -49,4 +51,5 @@ class TestLogin:
         self.driver.find_element(By.ID, "input-password").send_keys("Reaper@1902")
         self.driver.find_element(By.CSS_SELECTOR,"input[type=submit]").click()
         error_alert = wait.until(EC.visibility_of_element_located((By.XPATH, "//div[contains(@class,'alert-danger') and contains(.,'Warning: No match')]")))
+        allure.attach(self.driver.get_screenshot_as_png(),name="log",attachment_type=allure.attachment_type.PNG)
         assert error_alert.is_displayed()

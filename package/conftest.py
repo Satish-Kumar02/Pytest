@@ -1,34 +1,36 @@
 import datetime
 import pytest
 import os
-import shutil
-import allure
+# import shutil
+# import allure
 import pprint
 from selenium import webdriver
 from selenium.webdriver.common.by import By
-from selenium.webdriver.chrome.options import Options as ChromeOptions
-from selenium.webdriver.firefox.options import Options as FirefoxOptions
-from selenium.webdriver.edge.options import Options as EdgeOptions
+# from selenium.webdriver.chrome.options import Options as ChromeOptions
+# from selenium.webdriver.firefox.options import Options as FirefoxOptions
+# from selenium.webdriver.edge.options import Options as EdgeOptions
 
-@pytest.fixture(params=["Chrome","Firefox","edge"])
+# @pytest.fixture(params=["Chrome","Firefox","edge"])
+@pytest.fixture()
 def browser(request):
-    if request.param == "Chrome":
-        options = ChromeOptions()
-        options.add_argument("--headless")
-        options.add_argument("--window-size=1920,1080")
-        driver = webdriver.Chrome(options=options)
-    elif request.param == "Firefox":
-        options = FirefoxOptions()
-        options.add_argument("-headless")   # <-- THIS is the key
-        options.add_argument("--width=1920")
-        options.add_argument("--height=1080")
-        driver = webdriver.Firefox(options=options)
-    else:
-        options = EdgeOptions()
-        options.add_argument("--headless")
-        options.add_argument("--window-size=1920,1080")
-        driver = webdriver.Edge(options=options)
-    # driver.maximize_window()
+    # if request.param == "Chrome":
+    #     options = ChromeOptions()
+    #     options.add_argument("--headless")
+    #     options.add_argument("--window-size=1920,1080")
+    #     driver = webdriver.Chrome(options=options)
+    # elif request.param == "Firefox":
+    #     options = FirefoxOptions()
+    #     options.add_argument("-headless")   # <-- THIS is the key
+    #     options.add_argument("--width=1920")
+    #     options.add_argument("--height=1080")
+    #     driver = webdriver.Firefox(options=options)
+    # else:
+    #     options = EdgeOptions()
+    #     options.add_argument("--headless")
+    #     options.add_argument("--window-size=1920,1080")
+    #     driver = webdriver.Edge(options=options)
+    driver = webdriver.Chrome()
+    driver.maximize_window()
     driver.get("https://tutorialsninja.com/demo/")
     request.cls.driver=driver
     yield driver

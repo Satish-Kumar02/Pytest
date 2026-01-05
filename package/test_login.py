@@ -20,7 +20,9 @@ from selenium.webdriver.support import expected_conditions as EC
 #     (2016sathishkumar.sk@gmail.com, Spectra@1902, success)
 # ]
 @pytest.mark.usefixtures("login_page")
+@allure.severity(allure.severity_level.BLOCKER)
 class TestLogin:
+    @allure.severity(allure.severity_level.TRIVIAL)
     def test_Login_with_valid_credentials(self):
         wait = WebDriverWait(self.driver,20)
         self.driver.find_element(By.ID,"input-email").send_keys("2016sathishkumar.sk@gmail.com")
@@ -28,7 +30,8 @@ class TestLogin:
         self.driver.find_element(By.CSS_SELECTOR,"input[type=submit]").click()
         edit_account = wait.until(EC.visibility_of_element_located((By.LINK_TEXT, "Edit Account")))
         assert edit_account.is_displayed()
-        
+     
+    @allure.severity(allure.severity_level.CRITICAL)   
     def test_Login_with_correct_username_invalid_password(self):
         wait = WebDriverWait(self.driver,20)
         self.driver.find_element(By.ID,"input-email").send_keys("2016sathishkumar.sk@gmail.com")
@@ -37,6 +40,7 @@ class TestLogin:
         error_alert = wait.until(EC.visibility_of_element_located((By.XPATH, "//div[contains(@class,'alert-danger') and contains(.,'Warning: No match')]")))
         assert error_alert.is_displayed()
 
+    @allure.severity(allure.severity_level.NORMAL)
     def test_Login_with_incorrect_username_valid_password(self):
         wait = WebDriverWait(self.driver,20)
         self.driver.find_element(By.ID,"input-email").send_keys("sathiskumark192@gmail.com")
@@ -45,6 +49,7 @@ class TestLogin:
         error_alert = wait.until(EC.visibility_of_element_located((By.XPATH, "//div[contains(@class,'alert-danger') and contains(.,'Warning: No match')]")))
         assert error_alert.is_displayed()
         
+    @allure.severity(allure.severity_level.MINOR)
     def test_Login_with_incorrect_username_invalid_password(self):
         wait = WebDriverWait(self.driver,20)
         self.driver.find_element(By.ID,"input-email").send_keys("sathiskumark192@gmail.com")

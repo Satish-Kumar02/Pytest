@@ -17,12 +17,12 @@ class InvalidWebDriverException(Exception):
 # @pytest.fixture(params=["Chrome","Firefox","edge"])
 @pytest.fixture()
 def browser(request):
-    browser = config_reader.read_configuration("app","browser").lower()
-    if browser.__eq__("Chrome"):
+    browser = config_reader.read_configuration("app","browser").strip().lower()
+    if browser == ("chrome"):
         driver = webdriver.Chrome()
-    elif browser.__eq__("firefox"):
+    elif browser == ("firefox"):
         driver = webdriver.Firefox()
-    elif browser.__eq__("edge"): 
+    elif browser == ("edge"): 
         driver = webdriver.Edge()
     else:
         raise InvalidWebDriverException(f"Invalid WebDriver provided: {browser}")
@@ -45,6 +45,7 @@ def browser(request):
     # driver = webdriver.Chrome()
     driver.maximize_window()
     app_url = config_reader.read_configuration("app","url")
+    # print(f"App URL: '{app_url}'")
     driver.get(app_url)
     request.cls.driver=driver
     yield driver
@@ -65,7 +66,6 @@ def pytest_runtest_makereport(item, call):
     if report.when == "call" and report.failed:
         if hasattr(item, "cls") and item.cls:
             driver = getattr(item.cls, "driver", None)
-
             if driver:
                 os.makedirs("screenshots", exist_ok=True)
                 timestamp = datetime.datetime.now().strftime("%Y%m%d_%H%M%S")

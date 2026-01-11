@@ -6,13 +6,26 @@ import os
 import pprint
 from selenium import webdriver
 from selenium.webdriver.common.by import By
+from tutorial_ninja.Utility import config_reader
 # from selenium.webdriver.chrome.options import Options as ChromeOptions
 # from selenium.webdriver.firefox.options import Options as FirefoxOptions
 # from selenium.webdriver.edge.options import Options as EdgeOptions
 
+class InvalidWebDriverException(Exception):
+    pass
+
 # @pytest.fixture(params=["Chrome","Firefox","edge"])
 @pytest.fixture()
 def browser(request):
+    browser = config_reader.read_configuration("app","browser").lower()
+    if browser.__eq__("Chrome"):
+        driver = webdriver.Chrome()
+    elif browser.__eq__("firefox"):
+        driver = webdriver.Firefox()
+    elif browser.__eq__("edge"): 
+        driver = webdriver.Edge()
+    else:
+        raise InvalidWebDriverException(f"Invalid WebDriver provided: {browser}")
     # if request.param == "Chrome":
     #     options = ChromeOptions()
     #     options.add_argument("--headless")
@@ -29,9 +42,10 @@ def browser(request):
     #     options.add_argument("--headless")
     #     options.add_argument("--window-size=1920,1080")
     #     driver = webdriver.Edge(options=options)
-    driver = webdriver.Chrome()
+    # driver = webdriver.Chrome()
     driver.maximize_window()
-    driver.get("https://tutorialsninja.com/demo/")
+    app_url = config_reader.read_configuration("app","url")
+    driver.get(app_url)
     request.cls.driver=driver
     yield driver
     driver.quit()

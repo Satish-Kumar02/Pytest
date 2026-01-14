@@ -4,7 +4,7 @@ import os
 
 from selenium import webdriver
 from selenium.webdriver.common.by import By
-from tutorial_ninja.Utility import config_reader
+from Utility import config_reader
 
 class InvalidWebDriverException(Exception):
     pass

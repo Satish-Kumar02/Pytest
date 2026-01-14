@@ -1,8 +1,9 @@
 from selenium import webdriver
 from selenium.webdriver.common.by import By
-from Page_objects import base_page
+from page_objects.base_page import basepage
 
-class search_bar(base_page):
+
+class search_bar(basepage):
     _search_input = (By.XPATH,"//input[@name='search']")
     _search_button = (By.XPATH,"//button[@class='btn btn-default btn-lg']")
     

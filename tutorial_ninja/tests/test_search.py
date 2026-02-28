@@ -14,7 +14,7 @@ class TestSearch:
         home = home_page(self.driver)
         results = home.search_product("macbook")
         allure.attach(self.driver.get_screenshot_as_png(),name="macbook",attachment_type=allure.attachment_type.PNG)
-        assert results.is_product_displayed("macbook")
+        assert result.is_product_displayed("macbook")
         # self.driver.save_screenshot("MacBook.png")
         
         

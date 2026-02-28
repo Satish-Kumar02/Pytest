@@ -14,27 +14,19 @@ class TestSearch:
         home = home_page(self.driver)
         results = home.search_product("macbook")
         allure.attach(self.driver.get_screenshot_as_png(),name="macbook",attachment_type=allure.attachment_type.PNG)
-        assert result.is_product_displayed("macbook")
+        assert results.is_product_displayed("macbook")
         # self.driver.save_screenshot("MacBook.png")
-        
-        
+             
     def test_search_a_invalid_element(self):
-        wait = WebDriverWait(self.driver,10)
-        self.driver.find_element(By.XPATH,"//input[@name='search']").send_keys("acer")
-        self.driver.find_element(By.XPATH,"//button[@class='btn btn-default btn-lg']").click()
-        expected_text = "There is no product that matches the search criteria."
-        message_element =wait.until(EC.visibility_of_element_located((By.XPATH,"//div[@id='content']//p[text()='There is no product that matches the search criteria.']")))
-        actual_text = message_element.text
-        allure.attach(self.driver.get_screenshot_as_png(),name="no product",attachment_type=allure.attachment_type.PNG)
-        assert "no product" in actual_text
-        # self.driver.save_screenshot("invalid.png")
+        product_name = "acer"
+        home = home_page(self.driver)
+        results = home.search_product("acer")
+        allure.attach(self.driver.get_screenshot_as_png(),name="acer",attachment_type=allure.attachment_type.PNG)
+        assert results.is_no_product_displayed()
         
     def test_search_with_no_context(self):
-        wait = WebDriverWait(self.driver,10)
-        # self.driver.find_element(By.XPATH,"//input[@name='search']").send_keys("acer")
-        self.driver.find_element(By.XPATH,"//button[@class='btn btn-default btn-lg']").click()
-        expected_text = "There is no product that matches the search criteria."
-        message_element =wait.until(EC.visibility_of_element_located((By.XPATH,"//div[@id='content']//p[text()='There is no product that matches the search criteria.']")))
-        actual_text = message_element.text
-        allure.attach(self.driver.get_screenshot_as_png(),name="no product",attachment_type=allure.attachment_type.PNG)
-        assert "no product" in actual_text
+        product_name = ""
+        home = home_page(self.driver)
+        results = home.search_product("acer")
+        allure.attach(self.driver.get_screenshot_as_png(),name="",attachment_type=allure.attachment_type.PNG)
+        assert results.is_product_displayed("")

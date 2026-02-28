@@ -10,6 +10,12 @@ class home_page(base_page.basepage):
         self.search_bar = search_bar(driver)
         self.currency_dropdown = currency_dropdown(driver)
         
+    _product_prices = (By.CSS_SELECTOR, ".price")
+
+    def is_currency_symbol_displayed(self, symbol: str) -> bool:
+        prices = self.driver.find_elements(*self._product_prices)
+        return any(symbol in price.text for price in prices)
+        
     def search_product(self,product_name: str):
         self.search_bar.search_for(product_name)
         return search_results(self.driver)

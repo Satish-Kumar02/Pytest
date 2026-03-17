@@ -28,6 +28,12 @@ def browser(request):
     yield driver
     driver.quit()
     
+@pytest.fixture()
+def login_page(browser):
+    driver=browser
+    driver.find_element(By.XPATH,"//span[text()='My Account']").click()
+    driver.find_element(By.LINK_TEXT,"Login").click()
+    return driver
 
 @pytest.hookimpl(hookwrapper=True)
 def pytest_runtest_makereport(item, call):

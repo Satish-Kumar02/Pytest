@@ -1,0 +1,17 @@
+name: Test Automation Pipeline
+
+on: 
+    push:
+        branches:
+            - '**'    
+        
+    pull_request:
+                branches:
+                    - main
+            
+    workflow_dispatch:
+
+jobs:
+    test:
+        runs-on: ubuntu-latest
+

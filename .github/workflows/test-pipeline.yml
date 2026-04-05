@@ -54,4 +54,6 @@ jobs:
         - name: Set PYTHONPATH
           run: echo "PYTHONPATH=$(PWD)" >> $GITHUB_ENV
         - name: Run tests
-          run: pytest --alluredir=Reports
+          run: |
+            cd tutorial_ninja
+            pytest --alluredir=Reports

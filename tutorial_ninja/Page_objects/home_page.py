@@ -3,6 +3,7 @@ from page_objects import base_page
 from components.search_bar import search_bar
 from components.currency_dropdown import currency_dropdown
 from selenium.webdriver.common.by import By
+from page_objects.log_in import login_page
 
 class home_page(base_page.basepage):
     def __init__(self,driver):
@@ -24,3 +25,11 @@ class home_page(base_page.basepage):
     def check_currency(self,currency_name: str):
         self.currency_dropdown.select_currency(currency_name)
         return self
+    
+    _my_account = (By.XPATH, "//span[text()='My Account']")
+    _login_link = (By.LINK_TEXT, "Login")
+
+    def go_to_login_page(self):
+        self.click(self._my_account)
+        self.click(self._login_link)
+        return login_page(self.driver)

@@ -55,4 +55,4 @@ jobs:
             echo "---- CHECK PYTEST ----"
             python -m pip show pytest || echo "pytest NOT installed"
         - name: Set PYTHONPATH
-          run: echo "PYTHONPATH=$PWD" >> $GITHUB_ENV
+          run: echo "PYTHONPATH=$(PWD)" >> $GITHUB_ENV

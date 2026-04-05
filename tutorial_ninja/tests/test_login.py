@@ -1,6 +1,4 @@
-import pytest
 import allure
-from page_objects.log_in import login_page
 from page_objects.home_page import home_page
 
 # @pytest.fixture(autouse=True)

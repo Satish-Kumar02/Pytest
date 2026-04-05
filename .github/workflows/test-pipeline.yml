@@ -34,3 +34,23 @@ jobs:
 
         - name: Run tests
           run: pytest --alluredir=Reports
+        - name: DEBUG EVERYTHING
+          run: |
+            echo "---- CURRENT DIR ----"
+            pwd
+
+            echo "---- FILES ----"
+            ls -R
+
+            echo "---- REQUIREMENTS CONTENT ----"
+            cat requirements.txt || echo "requirements.txt NOT FOUND"
+
+            echo "---- INSTALLING ----"
+            python -m pip install --upgrade pip
+            python -m pip install -r requirements.txt
+
+            echo "---- INSTALLED PACKAGES ----"
+            python -m pip list
+
+            echo "---- CHECK PYTEST ----"
+            python -m pip show pytest || echo "pytest NOT installed"

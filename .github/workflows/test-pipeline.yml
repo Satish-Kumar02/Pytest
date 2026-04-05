@@ -31,9 +31,6 @@ jobs:
         
         - name: Verify Pytest
           run: python -m pytest --version
-
-        - name: Run tests
-          run: pytest --alluredir=Reports
         - name: DEBUG EVERYTHING
           run: |
             echo "---- CURRENT DIR ----"
@@ -56,3 +53,5 @@ jobs:
             python -m pip show pytest || echo "pytest NOT installed"
         - name: Set PYTHONPATH
           run: echo "PYTHONPATH=$(PWD)" >> $GITHUB_ENV
+        - name: Run tests
+          run: pytest --alluredir=Reports

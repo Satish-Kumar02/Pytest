@@ -36,6 +36,10 @@ jobs:
             cd tutorial_ninja
             pwd
             ls -R
+        - name: Fix folder casing at runtime
+          run: |
+            cd tutorial_ninja
+            mv Page_objects page_objects || true
         - name: Check if page_objects exists
           run: |
             cd tutorial_ninja

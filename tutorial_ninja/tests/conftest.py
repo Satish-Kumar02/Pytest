@@ -5,7 +5,7 @@ import sys
 
 from selenium import webdriver
 from selenium.webdriver.common.by import By
-from tutorial_ninja.Utility import config_reader
+from Utility import config_reader
 
 sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
 class InvalidWebDriverException(Exception):

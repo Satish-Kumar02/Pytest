@@ -45,15 +45,16 @@ jobs:
             ls -la
             echo "LEVEL 2:"
             find . -maxdepth 2 -type d    
-        - name: Print actual structure
+        - name: Print structure (FINAL DEBUG)
           run: |
-            cd tutorial_ninja
-            echo "PWD:"
             pwd
-            echo "FILES:"
+            echo "ROOT:"
             ls -la
-            echo "TREE:"
-            find . -maxdepth 2 -type d
+            echo "INSIDE tutorial_ninja:"
+            cd tutorial_ninja
+            ls -la
+            echo "FULL TREE:"
+            find . -maxdepth 3 -type d
         - name: Test import manually
           run: |
            cd tutorial_ninja

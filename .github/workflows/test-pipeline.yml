@@ -36,6 +36,10 @@ jobs:
             cd tutorial_ninja
             pwd
             ls -R
+        - name: Test import manually
+          run: |
+           cd tutorial_ninja
+            python -c "import page_objects; print('IMPORT SUCCESS')"
         - name: DEBUG EVERYTHING
           run: |
             echo "---- CURRENT DIR ----"

@@ -7,10 +7,11 @@ from selenium import webdriver
 from selenium.webdriver.common.by import By
 from tutorial_ninja.Utility import config_reader
 
+sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
 class InvalidWebDriverException(Exception):
     pass
 
-sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
+
 
 @pytest.fixture()
 def browser(request):

@@ -2,7 +2,7 @@ import pytest
 import allure
 from selenium import webdriver
 from selenium.webdriver.common.by import By
-from page_objects.home_page import home_page
+from tutorial_ninja.page_objects.home_page import home_page
 from selenium.webdriver.support.wait import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 from unittest import result

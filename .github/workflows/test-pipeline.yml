@@ -36,6 +36,11 @@ jobs:
             cd tutorial_ninja
             pwd
             ls -R
+        - name: Check if page_objects exists
+          run: |
+            cd tutorial_ninja
+            ls -la
+            ls -la page_objects || echo "page_objects NOT FOUND"
         - name: Inspect repo structure
           run: |
             cd tutorial_ninja

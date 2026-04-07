@@ -45,13 +45,15 @@ jobs:
             ls -la
             echo "LEVEL 2:"
             find . -maxdepth 2 -type d    
-        - name: Show actual structure
+        - name: Print actual structure
           run: |
             cd tutorial_ninja
             echo "PWD:"
             pwd
-            echo "CONTENTS:"
+            echo "FILES:"
             ls -la
+            echo "TREE:"
+            find . -maxdepth 2 -type d
         - name: Test import manually
           run: |
            cd tutorial_ninja

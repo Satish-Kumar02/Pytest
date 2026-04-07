@@ -1,5 +1,5 @@
 import allure
-from tutorial_ninja.page_objects.home_page import home_page
+from page_objects.home_page import home_page
 
 # @pytest.fixture(autouse=True)
 # def self.driver():

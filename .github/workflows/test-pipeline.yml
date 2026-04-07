@@ -36,6 +36,15 @@ jobs:
             cd tutorial_ninja
             pwd
             ls -R
+        - name: Inspect repo structure
+          run: |
+            cd tutorial_ninja
+            echo "CURRENT DIR:"
+            pwd
+            echo "LEVEL 1:"
+            ls -la
+            echo "LEVEL 2:"
+            find . -maxdepth 2 -type d    
         - name: Show actual structure
           run: |
             cd tutorial_ninja

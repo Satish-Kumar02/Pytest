@@ -36,6 +36,13 @@ jobs:
             cd tutorial_ninja
             pwd
             ls -R
+        - name: Show actual structure
+          run: |
+            cd tutorial_ninja
+            echo "PWD:"
+            pwd
+            echo "CONTENTS:"
+            ls -la
         - name: Test import manually
           run: |
            cd tutorial_ninja

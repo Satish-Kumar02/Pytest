@@ -8,8 +8,16 @@ class basepage:
         
     def click(self, locator):
         element = self.wait.until(EC.element_to_be_clickable(locator))
-        self.driver.execute_script("arguments[0].scrollIntoView({block: 'center'});", element)
-        element.click()
+        
+        self.driver.execute_script(
+            "arguments[0].scrollIntoView({block: 'center'});", element
+        )
+
+        try:
+            element.click()
+        except:
+            # fallback for headless / intercepted clicks
+            self.driver.execute_script("arguments[0].click();", element)
         
         
     def type(self,locator,text):

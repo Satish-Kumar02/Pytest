@@ -12,7 +12,6 @@ from webdriver_manager.chrome import ChromeDriverManager
 from webdriver_manager.firefox import GeckoDriverManager
 from webdriver_manager.microsoft import EdgeChromiumDriverManager
 from selenium import webdriver
-from selenium.webdriver.common.by import By
 from Utility import config_reader
 
 sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
@@ -35,8 +34,8 @@ def browser(request):
             options.add_argument("--headless=new")
             options.add_argument("--no-sandbox")
             options.add_argument("--disable-dev-shm-usage")
-
-        options.add_argument("--window-size=1920,1080")
+            options.add_argument("--window-size=1920,1080")
+        
 
         driver = webdriver.Chrome(
             service=ChromeService(ChromeDriverManager().install()),options=options)

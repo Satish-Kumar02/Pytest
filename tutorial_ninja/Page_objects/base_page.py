@@ -11,8 +11,10 @@ class basepage:
         element = self.wait.until(EC.element_to_be_clickable(locator))
         try:
             self.driver.execute_script("arguments[0].scrollIntoView({block: 'center'});",element)
+            print(self.driver.current_url)
             element.click()
         except Exception:
+            print(self.driver.current_url)
             self.driver.execute_script("arguments[0].click();", element)
         
         

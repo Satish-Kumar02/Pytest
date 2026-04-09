@@ -16,7 +16,7 @@ from selenium import webdriver
 from Utility import config_reader
 
 sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
-print("SYS PATH:", sys.path)
+#print("SYS PATH:", sys.path)
 class InvalidWebDriverException(Exception):
     pass
 

@@ -93,4 +93,4 @@ jobs:
         - name: Run tests
           run: |
             cd tutorial_ninja
-            pytest --alluredir=Reports
+            pytest -n 4 --alluredir=Reports

@@ -1,13 +1,18 @@
 import datetime
 import pytest
 import os
+import sys
 
 from selenium import webdriver
 from selenium.webdriver.common.by import By
 from Utility import config_reader
 
+sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
+print("SYS PATH:", sys.path)
 class InvalidWebDriverException(Exception):
     pass
+
+
 
 @pytest.fixture()
 def browser(request):

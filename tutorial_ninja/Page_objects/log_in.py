@@ -1,7 +1,4 @@
-from selenium import webdriver
-from selenium.webdriver.support.wait import WebDriverWait
 from selenium.webdriver.common.by import By
-import pytest
 from page_objects.base_page import basepage
 
 class login_page(basepage):

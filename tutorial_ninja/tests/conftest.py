@@ -2,7 +2,15 @@ import datetime
 import pytest
 import os
 import sys
-
+from selenium.webdriver.chrome.options import Options as ChromeOptions
+from selenium.webdriver.firefox.options import Options as FirefoxOptions
+from selenium.webdriver.edge.options import Options as EdgeOptions
+from selenium.webdriver.chrome.service import Service as ChromeService
+from selenium.webdriver.edge.service import Service as EdgeService
+from selenium.webdriver.firefox.service import Service as FirefoxService
+from webdriver_manager.chrome import ChromeDriverManager
+from webdriver_manager.firefox import GeckoDriverManager
+from webdriver_manager.microsoft import EdgeChromiumDriverManager
 from selenium import webdriver
 from selenium.webdriver.common.by import By
 from Utility import config_reader
@@ -16,13 +24,47 @@ class InvalidWebDriverException(Exception):
 
 @pytest.fixture()
 def browser(request):
-    browser = config_reader.read_configuration("app","browser").strip().lower()
-    if browser == ("chrome"):
-        driver = webdriver.Chrome()
-    elif browser == ("firefox"):
-        driver = webdriver.Firefox()
-    elif browser == ("edge"): 
-        driver = webdriver.Edge()
+    browser = config_reader.read_configuration("app", "browser").strip().lower()
+
+    print("Launching browser:", browser)
+
+    if browser == "chrome":
+        options = ChromeOptions()
+
+        if os.getenv("CI"):
+            options.add_argument("--headless=new")
+            options.add_argument("--no-sandbox")
+            options.add_argument("--disable-dev-shm-usage")
+
+        options.add_argument("--window-size=1920,1080")
+
+        driver = webdriver.Chrome(
+            service=ChromeService(ChromeDriverManager().install()),options=options)
+
+    elif browser == "firefox":
+        options = FirefoxOptions()
+
+        if os.getenv("CI"):
+            options.add_argument("--headless")
+
+        driver = webdriver.Firefox(
+            service=FirefoxService(GeckoDriverManager().install()),
+            options=options
+        )
+
+    elif browser == "edge":
+        options = EdgeOptions()
+
+        if os.getenv("CI"):
+            options.add_argument("--headless=new")
+            options.add_argument("--no-sandbox")
+            options.add_argument("--disable-dev-shm-usage")
+
+        driver = webdriver.Edge(
+            service=EdgeService(EdgeChromiumDriverManager().install()),
+            options=options
+        )
+
     else:
         raise InvalidWebDriverException(f"Invalid WebDriver provided: {browser}")
     driver.maximize_window()

@@ -13,6 +13,4 @@ class TestCurrency:
             name="Euro",
             attachment_type=allure.attachment_type.PNG)
 
-        assert home.is_currency_symbol_displayed("€")
-        
-        
+        assert home.is_currency_symbol_displayed("€")        

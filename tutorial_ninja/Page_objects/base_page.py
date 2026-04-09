@@ -6,16 +6,10 @@ class basepage:
         self.driver = driver
         self.wait = WebDriverWait(driver,timeout)
         
-    def click(self,locator):
-        #element = self.wait.until(EC.presence_of_element_located(locator))
+    def click(self, locator):
         element = self.wait.until(EC.element_to_be_clickable(locator))
-        try:
-            self.driver.execute_script("arguments[0].scrollIntoView({block: 'center'});",element)
-            print(self.driver.current_url)
-            element.click()
-        except Exception:
-            print(self.driver.current_url)
-            self.driver.execute_script("arguments[0].click();", element)
+        self.driver.execute_script("arguments[0].scrollIntoView({block: 'center'});", element)
+        element.click()
         
         
     def type(self,locator,text):

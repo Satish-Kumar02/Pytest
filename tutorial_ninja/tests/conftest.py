@@ -11,6 +11,7 @@ from selenium.webdriver.firefox.service import Service as FirefoxService
 from webdriver_manager.chrome import ChromeDriverManager
 from webdriver_manager.firefox import GeckoDriverManager
 from webdriver_manager.microsoft import EdgeChromiumDriverManager
+from selenium.webdriver.support.ui import WebDriverWait
 from selenium import webdriver
 from Utility import config_reader
 
@@ -18,8 +19,6 @@ sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), '..')
 print("SYS PATH:", sys.path)
 class InvalidWebDriverException(Exception):
     pass
-
-
 
 @pytest.fixture()
 def browser(request):
@@ -70,6 +69,7 @@ def browser(request):
     app_url = config_reader.read_configuration("app","url")
     # print(f"App URL: '{app_url}'") --> to debug what url it pick up
     driver.get(app_url)
+    WebDriverWait(driver, 10).until(lambda d: d.execute_script("return document.readyState")=="complete")
     request.cls.driver=driver
     yield driver
     driver.quit()

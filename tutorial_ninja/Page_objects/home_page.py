@@ -12,6 +12,8 @@ class home_page(base_page.basepage):
         self.currency_dropdown = currency_dropdown(driver)
         
     _product_prices = (By.CSS_SELECTOR, ".price")
+    _my_account = (By.XPATH, "//a[@title='My Account']")
+    _login_link = (By.LINK_TEXT, "Login")
 
     def is_currency_symbol_displayed(self, symbol: str) -> bool:
         prices = self.driver.find_elements(*self._product_prices)
@@ -25,9 +27,6 @@ class home_page(base_page.basepage):
     def check_currency(self,currency_name: str):
         self.currency_dropdown.select_currency(currency_name)
         return self
-    
-    _my_account = (By.XPATH, "//span[text()='My Account']")
-    _login_link = (By.LINK_TEXT, "Login")
 
     def go_to_login_page(self):
         self.click(self._my_account)

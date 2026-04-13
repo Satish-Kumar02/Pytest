@@ -1,28 +1,53 @@
-name: Test Automation Pipeline
-
+name: Test Automation Pipeline 
 on: 
-  push:
-    branches: [ "**" ]
-  pull_request:
-    branches: [ "main" ]
-
-jobs:
-  test:
-    runs-on: ubuntu-latest
-
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v4
-
-      - name: Setup Python
-        uses: actions/setup-python@v5
-        with:
-          python-version: '3.12'
-
-      - name: Install dependencies
-        run: pip install -r requirements.txt
-
-      - name: Run tests
-        run: |
-          cd tutorial_ninja
-          pytest --alluredir=Reports
+      push: 
+        branches: 
+          - '**' 
+      pull_request: 
+        branches: 
+          - main 
+      workflow_dispatch: 
+jobs: 
+  test: 
+    runs-on: ubuntu-latest 
+    steps: 
+      - name: checkout code 
+        uses: actions/checkout@v4 
+      - name: set up python 
+        uses: actions/setup-python@v5 
+        with: 
+          python-version: '3.12' 
+      - name: Upgrade PIP 
+        run: python -m pip install --upgrade pip 
+      - name: Install dependencies 
+        run: python -m pip install -r requirements.txt 
+      - name: Install pytest xdist 
+        run: python -m pip install pytest-xdist 
+      - name: Verify Pytest 
+        run: python -m pytest --version 
+      - name: Debug project structure 
+        run: | 
+          cd tutorial_ninja pwd ls -R 
+      - name: Fix folder casing at runtime 
+        run: | 
+          cd tutorial_ninja mv Page_objects page_objects || true 
+      - name: Check if page_objects exists 
+        run: | 
+          cd tutorial_ninja ls -la ls -la page_objects || echo "page_objects NOT FOUND" 
+      - name: Inspect repo structure 
+        run: | 
+          cd tutorial_ninja echo "CURRENT DIR:" pwd echo "LEVEL 1:" ls -la echo "LEVEL 2:" find . -maxdepth 2 -type d 
+      - name: Show real structure 
+        run: | 
+          echo "ROOT:" ls -la echo "----" cd tutorial_ninja echo "INSIDE tutorial_ninja:" ls -la echo "---- TREE ----" find . -maxdepth 3 -type d 
+      - name: Test import manually 
+        run: | 
+          cd tutorial_ninja python -c "import page_objects; print('IMPORT SUCCESS')" 
+      - name: DEBUG EVERYTHING 
+        run: | 
+          echo "---- CURRENT DIR ----" pwd echo "---- FILES ----" ls -R echo "---- REQUIREMENTS CONTENT ----" cat requirements.txt || echo "requirements.txt NOT FOUND" echo "---- INSTALLING ----" python -m pip install --upgrade pip python -m pip install -r requirements.txt echo "---- INSTALLED PACKAGES ----" python -m pip list echo "---- CHECK PYTEST ----" python -m pip show pytest || echo "pytest NOT installed" 
+      - name: Set PYTHONPATH 
+        run: echo "PYTHONPATH=$PWD" >> $GITHUB_ENV 
+      - name: Run tests 
+        run: | 
+          cd tutorial_ninja pytest -n 2 --alluredir=Reports

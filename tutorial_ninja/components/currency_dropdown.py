@@ -4,7 +4,7 @@ from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 
 class currency_dropdown(basepage):
-    _currency_dropdown = (By.CSS_SELECTOR, "button[data-toggle='dropdown']")
+    _currency_dropdown = (By.XPATH,"//span[text()='Currency']")
     _currency_euro = (By.XPATH,"//button[@name='EUR']")
     _currency_pound = (By.XPATH,"//button[@name='GBP']")
     _currency_dollar = (By.XPATH,"//button[@name='USD']")

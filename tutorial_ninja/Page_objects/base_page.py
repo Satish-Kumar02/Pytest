@@ -5,7 +5,6 @@ class basepage:
     def __init__(self,driver,timeout=20):
         self.driver = driver
         self.wait = WebDriverWait(driver,timeout)
-        self.wait.until(lambda d: d.execute_script("return document.readyState") == "complete")
         
     def click(self, locator):
         element = self.wait.until(EC.element_to_be_clickable(locator))

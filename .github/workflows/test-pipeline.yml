@@ -117,7 +117,7 @@ jobs:
             fi
         - name: Validate allure reports
           run: |
-            if [ -d "tutorial_ninja/Reports"] && ["$(ls -A tutorial_ninja/Reports)"]; then
+            if [ -d "tutorial_ninja/Reports" ] && [ "$(ls -A tutorial_ninja/Reports)" ]; then
               echo "Reports generated"
             else
               echo "Report Missing" && exit 1

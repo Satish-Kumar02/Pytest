@@ -121,6 +121,7 @@ jobs:
               echo "Reports generated"
             else
               echo "Report Missing" && exit 1
+            fi
         - name: Generate allure reports
           run: |
             allure generate tutorial_ninja/Reports \

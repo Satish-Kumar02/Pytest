@@ -44,15 +44,12 @@ jobs:
             cd tutorial_ninja
             pwd
             ls -R
-        - name: Fix folder casing at runtime
+        - name: Repo Health Check
           run: |
-            cd tutorial_ninja
-            mv Page_objects page_objects || true
-        - name: Check if page_objects exists
-          run: |
-            cd tutorial_ninja
+            echo "ROOT STRUCTURE:"
             ls -la
-            ls -la page_objects || echo "page_objects NOT FOUND"
+            echo "TUTORIAL_NINJA STRUCTURE:"
+            ls -la tutorial_ninja || echo "tutorial_ninja missing"
         - name: Inspect repo structure
           run: |
             cd tutorial_ninja
@@ -102,12 +99,27 @@ jobs:
           run: |
             cd tutorial_ninja
             pytest -n 4 --alluredir=Reports
+        - name: Install Allure
+          run: |
+            sudo apt-get update
+            sudo apt-get install -y default-jre
+            wget https://repo.maven.apache.org/maven2/io/qameta/allure/allure-commandline/2.24.0/allure-commandline-2.24.0.tgz
+            tar -xvzf allure-commandline-2.24.0.tgz
+            sudo mv allure-2.24.0 /opt/allure
+            sudo ln -s /opt/allure/bin/allure /usr/bin/allure
+        - name: Validate allure reports
+          run: |
+            if [ -d "tutorial_ninja/Reports"] && ["$(ls -A tutorial_ninja/Reports)"]; then
+              echo "Reports generated"
+            else
+              echo "Report Missing" && exit 1
         - name: Generate allure reports
           run: |
-            allure generate allure-results -o allure-report --clean
+            allure generate tutorial_ninja/Reports \
+            -o tutorial_ninja/Reports --clean
         - name: Zip report
           run: |
-            zip -r allure-report.zip allure-report
+            zip -r allure-report.zip tutorial_ninja/allure-report
         - name: Upload report to S3
           if: always()
           run: |

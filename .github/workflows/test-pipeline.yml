@@ -114,6 +114,7 @@ jobs:
               tar -xvzf allure-commandline-2.24.0.tgz
               sudo mv allure-2.24.0 /opt/allure
               sudo ln -s /opt/allure/bin/allure /usr/bin/allure
+            fi
         - name: Validate allure reports
           run: |
             if [ -d "tutorial_ninja/Reports"] && ["$(ls -A tutorial_ninja/Reports)"]; then

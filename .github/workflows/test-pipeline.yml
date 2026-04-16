@@ -16,6 +16,11 @@ jobs:
     test:
         runs-on: ubuntu-latest
 
+        env:
+          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY}}
+          AWS_DEFAULT_REGION: ap-south-2
+
         steps:
         - name: checkout code
           uses: actions/checkout@v4
@@ -97,3 +102,19 @@ jobs:
           run: |
             cd tutorial_ninja
             pytest -n 4 --alluredir=Reports
+        - name: Generate allure reports
+          run: |
+            allure generate allure-results -o allure-report --clean
+        - name: Zip report
+          run: |
+            zip -r allure-report.zip allure-report
+        - name: Upload report to S3
+          if: always()
+          run: |
+            aws s3 cp allure-report.zip\
+            s3: //allure-pytest-report-969578072631-ap-south-2-an/reports/run-${{ github.run_number }}.zip
+        - name: Update latest report
+          if: always()
+          run: |
+            aws s3 cp allure-report.zip\
+            s3: //allure-pytest-report-969578072631-ap-south-2-an/reports/latest.zip

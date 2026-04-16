@@ -111,8 +111,8 @@ jobs:
         - name: Upload report to S3
           if: always()
           run: |
-            aws s3 cp allure-report.zip\
-            s3: //allure-pytest-report-969578072631-ap-south-2-an/reports/run-${{ github.run_number }}.zip
+            aws s3 cp allure-report.zip \
+            s3://allure-pytest-report-969578072631-ap-south-2-an/reports/run-${{ github.run_number }}.zip
         - name: Update latest report
           if: always()
           run: |

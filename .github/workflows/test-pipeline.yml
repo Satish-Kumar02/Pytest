@@ -104,7 +104,7 @@ jobs:
         - name: Run tests
           run: |
             cd tutorial_ninja
-            pytest -n 4 --alluredir=Reports
+            pytest -n 4 --alluredir=${ALLURE_RESULTS_DIR:-tutorial_ninja/Reports}
         - name: Install Allure (cached)
           run: |
             if [ ! -d "/opt/allure" ]; then

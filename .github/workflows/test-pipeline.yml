@@ -116,6 +116,7 @@ jobs:
         - name: Run tests
           run: |
             cd tutorial_ninja
+<<<<<<< HEAD
             pytest -n 4 --alluredir=allure-results || true
         
         - name: Validate allure results
@@ -156,3 +157,6 @@ jobs:
           if: always()
           run: |
             aws s3 cp tutorial_ninja/allure-report.zip \ s3://allure-pytest-report-969578072631-ap-south-2-an/reports/latest.zip
+=======
+            pytest -n 4 --alluredir=Reports
+>>>>>>> 3095b028011810acd22f6385fcd107d8d1a7ccdb

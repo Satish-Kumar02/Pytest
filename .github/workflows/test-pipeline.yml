@@ -46,10 +46,8 @@ jobs:
           run: |
             sudo apt-get update
             sudo apt-get install -y default-jre
-
             wget https://repo.maven.apache.org/maven2/io/qameta/allure/allure-commandline/2.24.0/allure-commandline-2.24.0.tgz
             tar -xzf allure-commandline-2.24.0.tgz
-
             echo "$PWD/allure-2.24.0/bin" >> $GITHUB_PATH
         - name: Verify Allure installation
           run: |
@@ -95,20 +93,15 @@ jobs:
           run: |
             echo "---- CURRENT DIR ----"
             pwd
-
             echo "---- FILES ----"
             ls -R
-
             echo "---- REQUIREMENTS CONTENT ----"
             cat requirements.txt || echo "requirements.txt NOT FOUND"
-
             echo "---- INSTALLING ----"
             python -m pip install --upgrade pip
             python -m pip install -r requirements.txt
-
             echo "---- INSTALLED PACKAGES ----"
             python -m pip list
-
             echo "---- CHECK PYTEST ----"
             python -m pip show pytest || echo "pytest NOT installed"
         - name: Set PYTHONPATH
@@ -116,7 +109,6 @@ jobs:
         - name: Run tests
           run: |
             cd tutorial_ninja
-<<<<<<< HEAD
             pytest -n 4 --alluredir=allure-results || true
         
         - name: Validate allure results
@@ -140,7 +132,13 @@ jobs:
 
             echo "---- search zip ----"
             find . -name "*.zip"
-
+        - name: Ensure allure report exists
+          run: |
+            if [ -d "tutorial_ninja/allure-report" ] && [ "$(ls -A tutorial_ninja/allure-report)" ]; then
+              echo "Report ready"
+            else
+              echo "Report missing" && exit 1
+            fi
         - name: Zip report
           run: |
             if [ -d "tutorial_ninja/allure-report" ]; then
@@ -151,12 +149,9 @@ jobs:
         - name: Upload report to S3
           if: always()
           run: |
-            aws s3 cp tutorial_ninja/allure-report.zip \
+            aws s3 cp allure-report.zip \
               s3://allure-pytest-report-969578072631-ap-south-2-an/reports/run-${{ github.run_number }}.zip
         - name: Upload latest report
           if: always()
           run: |
             aws s3 cp tutorial_ninja/allure-report.zip \ s3://allure-pytest-report-969578072631-ap-south-2-an/reports/latest.zip
-=======
-            pytest -n 4 --alluredir=Reports
->>>>>>> 3095b028011810acd22f6385fcd107d8d1a7ccdb

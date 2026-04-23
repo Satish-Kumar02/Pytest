@@ -129,10 +129,24 @@ jobs:
           run: |
             allure generate tutorial_ninja/allure-results \
             -o tutorial_ninja/allure-report --clean
+        - name: Debug report artifacts
+          run: |
+            echo "---- ROOT ----"
+            ls -la
+
+            echo "---- tutorial_ninja ----"
+            ls -la tutorial_ninja || echo "missing folder"
+
+            echo "---- search zip ----"
+            find . -name "*.zip"
 
         - name: Zip report
           run: |
-            zip -r allure-report.zip tutorial_ninja/allure-report
+            if [ -d "tutorial_ninja/allure-report" ]; then
+              zip -r allure-report.zip tutorial_ninja/allure-report
+            else
+              echo "allure-report folder missing" && exit 1
+            fi
         - name: Upload report to S3
           if: always()
           run: |

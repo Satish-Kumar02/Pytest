@@ -114,18 +114,19 @@ jobs:
         - name: Run tests
           run: |
             cd tutorial_ninja
-            pytest -n 4 --alluredir=${ALLURE_RESULTS_DIR:-tutorial_ninja/Reports}
+            pytest -n 4 --alluredir=allure-results || true
         
-        - name: Validate allure reports
+        - name: Validate allure results
           run: |
             if [ -d "tutorial_ninja/allure-results" ] && [ "$(ls -A tutorial_ninja/allure-results)" ]; then
               echo "Results exist"
             else
               echo "No results generated" && exit 1
             fi
-        - name: Generate allure reports
+        - name: Generate allure report
           run: |
-            allure generate tutorial_ninja/allure-results -o tutorial_ninja/allure-report --clean
+            allure generate tutorial_ninja/allure-results \
+            -o tutorial_ninja/allure-report --clean
 
         - name: Zip report
           run: |

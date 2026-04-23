@@ -42,6 +42,16 @@ jobs:
           run: python -m pip install -r requirements.txt
         - name: Install pytest xdist
           run: python -m pip install pytest-xdist
+        - name: Install Allure (cached)
+          run: |
+            if [ ! -d "/opt/allure" ]; then
+              sudo apt-get update
+              sudo apt-get install -y default-jre
+              wget https://repo.maven.apache.org/maven2/io/qameta/allure/allure-commandline/2.24.0/allure-commandline-2.24.0.tgz
+              tar -xvzf allure-commandline-2.24.0.tgz
+              sudo mv allure-2.24.0 /opt/allure
+              sudo ln -s /opt/allure/bin/allure /usr/bin/allure
+            fi
         
         - name: Verify Pytest
           run: python -m pytest --version
@@ -105,36 +115,27 @@ jobs:
           run: |
             cd tutorial_ninja
             pytest -n 4 --alluredir=${ALLURE_RESULTS_DIR:-tutorial_ninja/Reports}
-        - name: Install Allure (cached)
-          run: |
-            if [ ! -d "/opt/allure" ]; then
-              sudo apt-get update
-              sudo apt-get install -y default-jre
-              wget https://repo.maven.apache.org/maven2/io/qameta/allure/allure-commandline/2.24.0/allure-commandline-2.24.0.tgz
-              tar -xvzf allure-commandline-2.24.0.tgz
-              sudo mv allure-2.24.0 /opt/allure
-              sudo ln -s /opt/allure/bin/allure /usr/bin/allure
-            fi
+        
         - name: Validate allure reports
           run: |
-            if [ -d "tutorial_ninja/Reports" ] && [ "$(ls -A tutorial_ninja/Reports)" ]; then
-              echo "Reports generated"
+            if [ -d "tutorial_ninja/allure-results" ] && [ "$(ls -A tutorial_ninja/allure-results)" ]; then
+              echo "Results exist"
             else
-              echo "Report Missing" && exit 1
+              echo "No results generated" && exit 1
             fi
         - name: Generate allure reports
           run: |
-            allure generate tutorial_ninja/Reports \
-            -o tutorial_ninja/Reports --clean
+            allure generate tutorial_ninja/allure-results -o tutorial_ninja/allure-report --clean
+
         - name: Zip report
           run: |
             zip -r allure-report.zip tutorial_ninja/allure-report
         - name: Upload report to S3
           if: always()
           run: |
-            aws s3 cp allure-report.zip \
+            aws s3 cp tutorial_ninja/allure-report.zip \
               s3://allure-pytest-report-969578072631-ap-south-2-an/reports/run-${{ github.run_number }}.zip
         - name: Upload latest report
           if: always()
           run: |
-            aws s3 cp allure-report.zip s3://allure-pytest-report-969578072631-ap-south-2-an/reports/latest.zip
+            aws s3 cp tutorial_ninja/allure-report.zip \ s3://allure-pytest-report-969578072631-ap-south-2-an/reports/latest.zip

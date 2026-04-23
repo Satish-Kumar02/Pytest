@@ -42,17 +42,19 @@ jobs:
           run: python -m pip install -r requirements.txt
         - name: Install pytest xdist
           run: python -m pip install pytest-xdist
-        - name: Install Allure (cached)
+        - name: Install Allure CLI
           run: |
-            if [ ! -d "/opt/allure" ]; then
-              sudo apt-get update
-              sudo apt-get install -y default-jre
-              wget https://repo.maven.apache.org/maven2/io/qameta/allure/allure-commandline/2.24.0/allure-commandline-2.24.0.tgz
-              tar -xvzf allure-commandline-2.24.0.tgz
-              sudo mv allure-2.24.0 /opt/allure
-              sudo ln -s /opt/allure/bin/allure /usr/bin/allure
-            fi
-        
+            sudo apt-get update
+            sudo apt-get install -y default-jre
+
+            wget https://repo.maven.apache.org/maven2/io/qameta/allure/allure-commandline/2.24.0/allure-commandline-2.24.0.tgz
+            tar -xzf allure-commandline-2.24.0.tgz
+
+            echo "$PWD/allure-2.24.0/bin" >> $GITHUB_PATH
+        - name: Verify Allure installation
+          run: |
+            which allure || echo "Allure not in PATH"
+            allure --version || echo "Allure not working"
         - name: Verify Pytest
           run: python -m pytest --version
         - name: Debug project structure

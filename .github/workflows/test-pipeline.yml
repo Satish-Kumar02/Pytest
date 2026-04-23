@@ -154,4 +154,5 @@ jobs:
         - name: Upload latest report
           if: always()
           run: |
-            aws s3 cp tutorial_ninja/allure-report.zip \ s3://allure-pytest-report-969578072631-ap-south-2-an/reports/latest.zip
+            aws s3 cp tutorial_ninja/allure-report.zip \
+            s3://allure-pytest-report-969578072631-ap-south-2-an/reports/latest.zip

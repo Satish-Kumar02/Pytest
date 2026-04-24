@@ -1,5 +1,7 @@
 name: Test Automation Pipeline
 
+permissions:
+  contents: read
 on: 
     push:
         branches-ignore: 

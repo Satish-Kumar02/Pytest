@@ -73,7 +73,8 @@ def browser(request):
     # print(f"App URL: '{app_url}'") --> to debug what url it pick up
     driver.get(app_url)
     WebDriverWait(driver, 10).until(lambda d: d.execute_script("return document.readyState")=="complete")
-    request.cls.driver=driver
+    if request.cls:
+        request.cls.driver=driver
     yield driver
     driver.quit()
 

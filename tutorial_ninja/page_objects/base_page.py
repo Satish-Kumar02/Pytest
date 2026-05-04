@@ -25,6 +25,12 @@ class basepage:
         element = self.wait.until(EC.visibility_of_element_located(locator))
         element.clear()
         element.send_keys(text)
+    
+    def find_elements(self, by, locator):
+        return self.driver.find_elements(by, locator)
+
+    def find_element(self, by, locator):
+        return self.driver.find_element(by, locator)
         
     def get_text(self,locator):
         return self.wait.until(EC.visibility_of_element_located(locator)).text

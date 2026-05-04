@@ -4,12 +4,14 @@ from components.search_bar import search_bar
 from components.currency_dropdown import currency_dropdown
 from selenium.webdriver.common.by import By
 from page_objects.log_in import login_page
+from components.navbar import navbar
 
 class home_page(base_page.basepage):
     def __init__(self,driver):
         super().__init__(driver)
         self.search_bar = search_bar(driver)
         self.currency_dropdown = currency_dropdown(driver)
+        self.navbar=navbar(driver)
         
     _product_prices = (By.CSS_SELECTOR, ".price")
     _my_account = (By.XPATH, "//a[@title='My Account']")
@@ -32,3 +34,6 @@ class home_page(base_page.basepage):
         self.click(self._my_account)
         self.click(self._login_link)
         return login_page(self.driver)
+    
+    # def navigation_bar(self):
+    #     self.

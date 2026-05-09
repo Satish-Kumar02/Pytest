@@ -1,5 +1,6 @@
 from selenium.webdriver.common.by import By
 from page_objects.base_page import basepage
+from components.product_page import product_page
 
 class search_results(basepage):
     
@@ -13,6 +14,11 @@ class search_results(basepage):
             f"'{product_name.lower()}')]"
         )
         return self.is_element_displayed(locator)
+    
+    def select_product(self, product_name):
+        product_locator = (By.LINK_TEXT, product_name)
+        self.click(product_locator)
+        return product_page(self.driver)
     
     def is_no_product_displayed(self)-> bool:
         return self.is_element_displayed(self._no_results)

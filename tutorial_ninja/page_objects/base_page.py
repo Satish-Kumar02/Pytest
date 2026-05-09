@@ -43,3 +43,9 @@ class basepage:
             return self.wait.until(EC.visibility_of_element_located(locator)).is_displayed()
         except:
             return False
+        
+    def type(self, locator, text, clear_first=True):
+        element = self.find(locator)
+        if clear_first:
+            element.clear()
+        element.send_keys(text)

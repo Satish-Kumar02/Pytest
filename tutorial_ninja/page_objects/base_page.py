@@ -10,15 +10,10 @@ class basepage:
         
     def click(self, locator):
         element = self.wait.until(EC.element_to_be_clickable(locator))
-        
-        self.driver.execute_script(
-            "arguments[0].scrollIntoView({block: 'center'});", element
-        )
-
+        self.driver.execute_script("arguments[0].scrollIntoView({block: 'center'});", element)
         try:
             element.click()
         except:
-            # fallback for headless / intercepted clicks
             self.driver.execute_script("arguments[0].click();", element)
         
         
@@ -50,6 +45,10 @@ class basepage:
         if clear_first:
             element.clear()
         element.send_keys(text)
+    
+    def clear(self, locator):
+        element = self.find(locator)
+        element.clear()
         
     def select_by_visible_text(self, locator, text):
         dropdown = Select(self.find(locator))
@@ -57,3 +56,13 @@ class basepage:
         
     def upload_file(self, locator, file_path):
         self.find(locator).send_keys(file_path)
+        
+    def accept_alert(self, timeout=10):
+        alert = WebDriverWait(self.driver,timeout).until(EC.alert_is_present())
+        alert.accept()
+    
+    def find(self, locator):
+        return self.driver.find_element(*locator)
+    
+    def get_text(self, locator):
+        return self.find(locator).text

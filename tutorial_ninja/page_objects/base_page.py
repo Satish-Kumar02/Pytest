@@ -54,3 +54,6 @@ class basepage:
     def select_by_visible_text(self, locator, text):
         dropdown = Select(self.find(locator))
         dropdown.select_by_visible_text(text)
+        
+    def upload_file(self, locator, file_path):
+        self.find(locator).send_keys(file_path)

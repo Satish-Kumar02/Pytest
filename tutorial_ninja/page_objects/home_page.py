@@ -5,7 +5,7 @@ from components.currency_dropdown import currency_dropdown
 from selenium.webdriver.common.by import By
 from page_objects.log_in import login_page
 from components.navbar import navbar
-from components.product_page import product_page
+#from components.product_page import product_page
 
 class home_page(base_page.basepage):
     def __init__(self,driver):
@@ -13,7 +13,7 @@ class home_page(base_page.basepage):
         self.search_bar = search_bar(driver)
         self.currency_dropdown = currency_dropdown(driver)
         self.navbar=navbar(driver)
-        self.product_page = product_page(driver)
+        #self.product_page = product_page(driver)
         
     _product_prices = (By.CSS_SELECTOR, ".price")
     _my_account = (By.XPATH, "//a[@title='My Account']")

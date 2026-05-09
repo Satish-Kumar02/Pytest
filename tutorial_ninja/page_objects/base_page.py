@@ -1,5 +1,6 @@
 from selenium.webdriver.support.wait import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
+from selenium.webdriver.support.ui import Select
 
 class basepage:
     def __init__(self,driver,timeout=20):
@@ -49,3 +50,7 @@ class basepage:
         if clear_first:
             element.clear()
         element.send_keys(text)
+        
+    def select_by_visible_text(self, locator, text):
+        dropdown = Select(self.find(locator))
+        dropdown.select_by_visible_text(text)

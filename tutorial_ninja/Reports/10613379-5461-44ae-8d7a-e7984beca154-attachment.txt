@@ -1,0 +1,4 @@
+Error clearing emails: HTTPConnectionPool(host='mailhog', port=8025): Max retries exceeded with url: /api/v1/messages (Caused by NameResolutionError("HTTPConnection(host='mailhog', port=8025): Failed to resolve 'mailhog' ([Errno 11001] getaddrinfo failed)"))
+Error sending email: [Errno 11001] getaddrinfo failed
+Error clearing emails: HTTPConnectionPool(host='mailhog', port=8025): Max retries exceeded with url: /api/v1/messages (Caused by NameResolutionError("HTTPConnection(host='mailhog', port=8025): Failed to resolve 'mailhog' ([Errno 11001] getaddrinfo failed)"))
+Error clearing emails: HTTPConnectionPool(host='mailhog', port=8025): Max retries exceeded with url: /api/v1/messages (Caused by NameResolutionError("HTTPConnection(host='mailhog', port=8025): Failed to resolve 'mailhog' ([Errno 11001] getaddrinfo failed)"))

@@ -1,0 +1,1 @@
+{"uuid": "6e6cff9c-5afa-4ca7-abe0-ff3a764585d7", "children": ["5c8998d5-e557-4ee2-8bf8-a6ddd8cd1f37"], "befores": [{"name": "auto_cleanup_emails", "status": "passed", "start": 1778962269474, "stop": 1778962272167}], "afters": [{"name": "auto_cleanup_emails::0", "status": "passed", "start": 1778962282821, "stop": 1778962285521}], "start": 1778962269474, "stop": 1778962285521}

@@ -7,15 +7,24 @@ broken = 0
 skipped = 0
 
 # Determine the correct path to allure-results
-allure_results_path = "tutorial_ninja/allure-results"
-if not os.path.exists(allure_results_path):
-    allure_results_path = "allure-results"
+# Try multiple possible paths
+possible_paths = [
+    "tutorial_ninja/allure-results",
+    "allure-results",
+    os.path.join(os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__)))), "tutorial_ninja", "allure-results")
+]
+
+allure_results_path = None
+for path in possible_paths:
+    if os.path.exists(path):
+        allure_results_path = path
+        break
 
 # Debug: Print directory contents
-print(f"Checking path: {allure_results_path}")
-print(f"Path exists: {os.path.exists(allure_results_path)}")
+print(f"Checking paths: {possible_paths}")
+print(f"Found path: {allure_results_path}")
 
-if os.path.exists(allure_results_path):
+if allure_results_path and os.path.exists(allure_results_path):
     files = os.listdir(allure_results_path)
     print(f"Files found: {files}")
     
@@ -44,7 +53,7 @@ if os.path.exists(allure_results_path):
         except (json.JSONDecodeError, IOError) as e:
             print(f"Error reading {file}: {e}")
 else:
-    print(f"Error: allure-results directory not found at {allure_results_path}")
+    print(f"Warning: allure-results directory not found")
         
 total = passed + failed + broken + skipped
 

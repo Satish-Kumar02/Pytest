@@ -6,11 +6,16 @@ failed = 0
 broken = 0
 skipped = 0
 
-for file in os.listdir("allure-results"):
+# Determine the correct path to allure-results
+allure_results_path = "tutorial_ninja/allure-results"
+if not os.path.exists(allure_results_path):
+    allure_results_path = "allure-results"
+
+for file in os.listdir(allure_results_path):
     if not file.endswith("-results.json"):
         continue
     
-    with open(os.path.join("allure-results",file),encoding="utf-8") as f:
+    with open(os.path.join(allure_results_path, file), encoding="utf-8") as f:
         data = json.load(f)
     
     status = data.get("status")
@@ -26,7 +31,7 @@ for file in os.listdir("allure-results"):
         
 total = passed + failed + broken + skipped
 
-with open("email_body.txt", f) as f:
+with open("email_body.txt", "w") as f:
     f.write(f"""
         Test Execution Summary
 

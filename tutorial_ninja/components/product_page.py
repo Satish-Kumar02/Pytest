@@ -13,7 +13,11 @@ class product_page(basepage):
     _time_input = (By.ID, "input-option221")
     _datetime_input = (By.ID, "input-option220")
     _validation_message = (By.CSS_SELECTOR,".text-danger")
+    _Macbook = (By.LINK_TEXT,"MacBook")
 
+    def add_mac(self):
+        self.click(self._Macbook)
+    
     def select_radio_option(self, value):
         locator = (By.XPATH,f"//*[@id='input-option218']//input[@value='{value}']")
         element = WebDriverWait(self.driver, 10).until(EC.presence_of_element_located(locator))

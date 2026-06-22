@@ -26,7 +26,7 @@ for file in os.listdir("allure-results"):
         
 total = passed + failed + broken + skipped
 
-with open("email_body.txt", w) as f:
+with open("email_body.txt", f) as f:
     f.write(f"""
         Test Execution Summary
 

@@ -172,9 +172,9 @@ jobs:
             server_address: smtp.gmail.com
             server_port: 465
             secure: true
-            username: ${{ secrets.EMAIL_USERNAME}}
-            password: ${{ secrets.EMAIL_PASSWORD}}
+            username: ${{ secrets.EMAIL_USERNAME }}
+            password: ${{ secrets.EMAIL_PASSWORD }}
             subject: Test result
             to: sathiskumark192@gmail.com
-            from: ${{ secrets.EMAIL_USERNAME}}
+            from: ${{ secrets.EMAIL_USERNAME }}
             body: file://email_body.txt

@@ -164,7 +164,7 @@ jobs:
             aws s3 cp allure-report.zip s3://allure-pytest-report-969578072631-ap-south-2-an/reports/latest.zip
         
         - name: generate summary
-          run: cd tutorial_ninja && python Utility/generate_summary.py
+          run: python tutorial_ninja/Utility/generate_summary.py
 
         - name: send test results
           uses: dawidd6/action-send-mail@v3

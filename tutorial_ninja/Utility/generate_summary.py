@@ -31,16 +31,18 @@ for file in os.listdir(allure_results_path):
         
 total = passed + failed + broken + skipped
 
-with open("email_body.txt", "w") as f:
-    f.write(f"""
-        Test Execution Summary
+# Create email_body.txt in the root directory
+email_body_path = os.path.join(os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__)))), "email_body.txt")
 
-        Total Tests: {total}
-        Passed: {passed}
-        Failed: {failed}
-        Broken: {broken}
-        Skipped: {skipped}
+with open(email_body_path, "w") as f:
+    f.write(f"""Test Execution Summary
 
-        Allure Report:
-        https://reports.yourdomain.com/latest
-        """)
+Total Tests: {total}
+Passed: {passed}
+Failed: {failed}
+Broken: {broken}
+Skipped: {skipped}
+
+Allure Report:
+https://reports.yourdomain.com/latest
+""")

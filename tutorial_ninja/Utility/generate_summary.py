@@ -51,6 +51,14 @@ total = passed + failed + broken + skipped
 # Create email_body.txt in the root directory
 email_body_path = os.path.join(os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__)))), "email_body.txt")
 
+# S3 URL configuration
+s3_bucket = "allure-pytest-report-969578072631-ap-south-2-an"
+aws_region = "ap-south-2"
+run_number = os.environ.get("GITHUB_RUN_NUMBER", "latest")
+
+# Construct S3 HTTPS URL
+s3_https_url = f"https://{s3_bucket}.s3.{aws_region}.amazonaws.com/reports/run-{run_number}.zip"
+
 email_content = f"""Test Execution Summary
 
 Total Tests: {total}
@@ -59,8 +67,11 @@ Failed: {failed}
 Broken: {broken}
 Skipped: {skipped}
 
-Allure Report:
-https://reports.yourdomain.com/latest
+Allure Report (S3):
+{s3_https_url}
+
+Latest Report:
+https://{s3_bucket}.s3.{aws_region}.amazonaws.com/reports/latest.zip
 """
 
 print(f"Creating email body at: {email_body_path}")

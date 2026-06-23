@@ -21,7 +21,7 @@ class product_page(basepage):
     def select_radio_option(self, value):
         locator = (By.XPATH,f"//*[@id='input-option218']//input[@value='{value}']")
         element = WebDriverWait(self.driver, 10).until(EC.presence_of_element_located(locator))
-        #self.driver.execute_script("arguments[0].click();",element)
+        self.driver.execute_script("arguments[0].click();",element)
 
     def select_checkbox(self):
         element = WebDriverWait(self.driver, 10).until(EC.visibility_of_element_located(self._checkbox))
@@ -90,18 +90,28 @@ class product_page(basepage):
         try:
             # Wait for the validation message to appear
             WebDriverWait(self.driver, 5).until(EC.presence_of_element_located(self._validation_message))
-            return self.get_text(self._validation_message)
+            element = self.driver.find_element(*self._validation_message)
+            message = element.text.strip()
+            if message:
+                return message
         except:
-            # Try alternative selectors if the primary one fails
-            alt_locators = [
-                (By.XPATH, "//div[@class='alert alert-danger']"),
-                (By.CSS_SELECTOR, ".alert-danger"),
-                (By.XPATH, "//div[contains(@class, 'text-danger')]")
-            ]
-            for locator in alt_locators:
-                try:
-                    element = WebDriverWait(self.driver, 2).until(EC.presence_of_element_located(locator))
-                    return element.text
-                except:
-                    continue
-            return ""
+            pass
+        
+        # Try alternative selectors if the primary one fails
+        alt_locators = [
+            (By.XPATH, "//div[@class='alert alert-danger']"),
+            (By.CSS_SELECTOR, ".alert-danger"),
+            (By.XPATH, "//div[contains(@class, 'text-danger')]"),
+            (By.XPATH, "//div[contains(@class, 'alert')]")
+        ]
+        
+        for locator in alt_locators:
+            try:
+                element = WebDriverWait(self.driver, 2).until(EC.presence_of_element_located(locator))
+                message = element.text.strip()
+                if message:
+                    return message
+            except:
+                continue
+        
+        return ""

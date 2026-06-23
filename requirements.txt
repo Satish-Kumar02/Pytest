@@ -3,3 +3,6 @@ selenium==4.21.0
 allure-pytest==2.15.3
 webdriver-manager==4.0.2
 pytest-html==4.1.1
+pytest-xdist==3.8.0
+pytest-rerunfailures==16.1
+pytest-timeout==2.1.0

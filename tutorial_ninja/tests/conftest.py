@@ -88,14 +88,37 @@ def browser(request):
 
     else:
         raise InvalidWebDriverException(f"Invalid WebDriver provided: {browser}")
+    
+    # Additional safety delays for CI environments
+    if os.getenv("CI"):
+        time.sleep(2)  # Allow time for browser to fully initialize
+    
     driver.maximize_window()
     app_url = config_reader.read_configuration("app","url")
     driver.get(app_url)
-    WebDriverWait(driver, 10).until(lambda d: d.execute_script("return document.readyState")=="complete")
+    
+    # Enhanced wait: check for document ready AND body element present
+    WebDriverWait(driver, 15).until(
+        lambda d: d.execute_script("return document.readyState") == "complete" 
+        and len(d.find_elements("tag name", "body")) > 0
+    )
+    
+    # Additional wait for page stability
+    time.sleep(1)
+    
     if request.cls:
         request.cls.driver=driver
     yield driver
-    driver.quit()
+    
+    # Proper cleanup
+    try:
+        driver.quit()
+    except Exception as e:
+        print(f"Error during driver cleanup: {e}")
+        try:
+            driver.close()
+        except:
+            pass
 
 @pytest.hookimpl(hookwrapper=True)
 def pytest_runtest_makereport(item, call):

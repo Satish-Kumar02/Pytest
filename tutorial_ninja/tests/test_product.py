@@ -16,3 +16,8 @@ class Test_product:
         product.set_quantity(2)
         product.add_to_cart()
         assert "Radio required!" in product.get_validation_message()
+        
+    # def test_add_Macbook(self, browser):
+    #     home = home_page(browser)
+    #     product = home.add_mac()
+    #     product.

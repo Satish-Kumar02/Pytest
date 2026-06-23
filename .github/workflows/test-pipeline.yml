@@ -11,7 +11,10 @@ on:
     pull_request: 
         branches: 
           - main 
-            
+
+    schedule:
+      - cron: '0 0 * * *'
+
     workflow_dispatch:
 
 permissions:
@@ -40,6 +43,13 @@ jobs:
           with:
             path: /opt/allure
             key: allure-2.24.0
+        - name: Cache webdriver-manager
+          uses: actions/cache@v4
+          with:
+            path: ~/.wdm
+            key: webdriver-manager-${{ runner.os }}
+            restore-keys: |
+              webdriver-manager-${{ runner.os }}
         - name: Upgrade PIP
           run: python -m pip install --upgrade pip
 
@@ -111,10 +121,12 @@ jobs:
             python -m pip show pytest || echo "pytest NOT installed"
         - name: Set PYTHONPATH
           run: echo "PYTHONPATH=$PWD" >> $GITHUB_ENV
+        - name: Set CI environment variable
+          run: echo "CI=true" >> $GITHUB_ENV
         - name: Run tests
           run: |
             cd tutorial_ninja
-            pytest -n 4 --alluredir=allure-results || true
+            pytest -n 2 --alluredir=allure-results -v --tb=short --reruns 2 --reruns-delay 5 --timeout=60 || true
         
         - name: Validate allure results
           run: |
@@ -159,3 +171,19 @@ jobs:
         - name: Upload report
           run: |
             aws s3 cp allure-report.zip s3://allure-pytest-report-969578072631-ap-south-2-an/reports/latest.zip
+        
+        - name: generate summary
+          run: python tutorial_ninja/Utility/generate_summary.py
+
+        - name: send test results
+          uses: dawidd6/action-send-mail@v3
+          with:
+            server_address: smtp.gmail.com
+            server_port: 465
+            secure: true
+            username: ${{ secrets.EMAIL_USERNAME }}
+            password: ${{ secrets.EMAIL_PASSWORD }}
+            subject: Test result
+            to: sathiskumark192@gmail.com
+            from: ${{ secrets.EMAIL_USERNAME }}
+            body: file://email_body.txt

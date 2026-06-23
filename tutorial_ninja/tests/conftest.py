@@ -2,6 +2,7 @@ import datetime
 import pytest
 import os
 import sys
+import time
 from selenium.webdriver.chrome.options import Options as ChromeOptions
 from selenium.webdriver.firefox.options import Options as FirefoxOptions
 from selenium.webdriver.edge.options import Options as EdgeOptions
@@ -16,9 +17,23 @@ from selenium import webdriver
 from Utility import config_reader
 
 sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
-#print("SYS PATH:", sys.path)
+
 class InvalidWebDriverException(Exception):
     pass
+
+def get_driver_with_retry(driver_manager, max_retries=3):
+    """Download driver with retry logic"""
+    for attempt in range(max_retries):
+        try:
+            return driver_manager.install()
+        except Exception as e:
+            print(f"Attempt {attempt + 1}/{max_retries} failed: {str(e)}")
+            if attempt < max_retries - 1:
+                wait_time = 5 * (attempt + 1)
+                print(f"Retrying in {wait_time} seconds...")
+                time.sleep(wait_time)
+            else:
+                raise
 
 @pytest.fixture()
 def browser(request):
@@ -35,9 +50,12 @@ def browser(request):
             options.add_argument("--disable-dev-shm-usage")
             options.add_argument("--window-size=1920,1080")
         
-
+        # Use retry logic for driver download
+        chrome_driver_path = get_driver_with_retry(ChromeDriverManager())
         driver = webdriver.Chrome(
-            service=ChromeService(ChromeDriverManager().install()),options=options)
+            service=ChromeService(chrome_driver_path),
+            options=options
+        )
 
     elif browser == "firefox":
         options = FirefoxOptions()
@@ -48,8 +66,9 @@ def browser(request):
             options.add_argument("--disable-dev-shm-usage")
             options.add_argument("--window-size=1920,1080")
 
+        firefox_driver_path = get_driver_with_retry(GeckoDriverManager())
         driver = webdriver.Firefox(
-            service=FirefoxService(GeckoDriverManager().install()),
+            service=FirefoxService(firefox_driver_path),
             options=options
         )
 
@@ -61,22 +80,45 @@ def browser(request):
             options.add_argument("--no-sandbox")
             options.add_argument("--disable-dev-shm-usage")
 
+        edge_driver_path = get_driver_with_retry(EdgeChromiumDriverManager())
         driver = webdriver.Edge(
-            service=EdgeService(EdgeChromiumDriverManager().install()),
+            service=EdgeService(edge_driver_path),
             options=options
         )
 
     else:
         raise InvalidWebDriverException(f"Invalid WebDriver provided: {browser}")
+    
+    # Additional safety delays for CI environments
+    if os.getenv("CI"):
+        time.sleep(2)  # Allow time for browser to fully initialize
+    
     driver.maximize_window()
     app_url = config_reader.read_configuration("app","url")
-    # print(f"App URL: '{app_url}'") --> to debug what url it pick up
     driver.get(app_url)
-    WebDriverWait(driver, 10).until(lambda d: d.execute_script("return document.readyState")=="complete")
+    
+    # Enhanced wait: check for document ready AND body element present
+    WebDriverWait(driver, 15).until(
+        lambda d: d.execute_script("return document.readyState") == "complete" 
+        and len(d.find_elements("tag name", "body")) > 0
+    )
+    
+    # Additional wait for page stability
+    time.sleep(1)
+    
     if request.cls:
         request.cls.driver=driver
     yield driver
-    driver.quit()
+    
+    # Proper cleanup
+    try:
+        driver.quit()
+    except Exception as e:
+        print(f"Error during driver cleanup: {e}")
+        try:
+            driver.close()
+        except:
+            pass
 
 @pytest.hookimpl(hookwrapper=True)
 def pytest_runtest_makereport(item, call):

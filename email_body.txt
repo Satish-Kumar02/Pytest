@@ -1,0 +1,13 @@
+Test Execution Summary
+
+Total Tests: 0
+Passed: 0
+Failed: 0
+Broken: 0
+Skipped: 0
+
+Allure Report (S3):
+https://allure-pytest-report-969578072631-ap-south-2-an.s3.ap-south-2.amazonaws.com/reports/run-latest.zip
+
+Latest Report:
+https://allure-pytest-report-969578072631-ap-south-2-an.s3.ap-south-2.amazonaws.com/reports/latest.zip
